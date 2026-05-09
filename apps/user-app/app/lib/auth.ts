@@ -1,6 +1,7 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
+import { signIn } from "next-auth/react";
 
 export const authOptions = {
     providers: [
@@ -19,7 +20,7 @@ export const authOptions = {
                     number: credentials.phone
                 }
             });
-
+            
             if (existingUser) {
                 const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
                 if (passwordValidation) {
@@ -31,7 +32,7 @@ export const authOptions = {
                 }
                 return null;
             }
-
+            console.log("here " , existingUser); 
             try {
                 const user = await db.user.create({
                     data: {
@@ -46,6 +47,7 @@ export const authOptions = {
                     email: user.number
                 }
             } catch(e) {
+                console.log("Error creating user: ", e); 
                 console.error(e);
             }
 
@@ -53,7 +55,8 @@ export const authOptions = {
           },
         })
     ],
-    secret: process.env.JWT_SECRET || "secret",
+    
+    secret: process.env.JWT_SECRET ,
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
         async session({ token, session }: any) {
