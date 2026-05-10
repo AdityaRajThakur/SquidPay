@@ -42,13 +42,33 @@ export const authOptions = {
             }
             console.log("here " , existingUser); 
             try {
-                const user = await db.user.create({
-                    data: {
-                        number: credentials.phone,
-                        password: hashedPassword
+                var user:{
+                    id : number , 
+                    name :string | null, 
+                    number : string | null 
+                } = {id : 0 , name : "" , number :""}
+
+                await db.$transaction(async (tx)=>{
+                    const res = await tx.user.create({
+                        data: {
+                            number: credentials.phone,
+                            password: hashedPassword
+                        }
+                    });
+                    await tx.balance.create({
+                        data :{
+                            amount : 0 , 
+                            locked : 0 , 
+                            userId: res.id
+                        }
+                    })
+                    user = {
+                        id : res.id , 
+                        name : res.name , 
+                        number : res.number 
                     }
                 });
-            
+                if(!user.number) return null ; 
                 return {
                     id: user.id.toString(),
                     name: user.name,
