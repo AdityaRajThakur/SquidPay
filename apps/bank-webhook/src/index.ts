@@ -1,21 +1,21 @@
 import express from 'express';
-import z from "zod" ; 
 import {PaymentTypes} from "../lib/PaymentTypes" ; 
 import prisma from "@repo/db/client";
+import {OnRampStatus} from "@prisma/client" ; 
 const app = express();
 app.use(express.json()) ; 
 app.post("/hdfcWebhook", async (req, res) => {
     
     const paymentInformation: {
-        token: string,
-        userId: number,
-        amount: number
-    } = { token: req.body.token, userId: req.body.user_identifier, amount: req.body.amount }
+        token: string, 
+        userId: number, 
+        amount: number 
+    } = { token: req.body.token, userId: req.body.user_identifier , amount: req.body.amount } 
     const parseTypes = PaymentTypes.safeParse(paymentInformation) ; 
-    if(!parseTypes.success){
-        return res.status(401).json({
-            msg :"Received Invalid input"
-        }); 
+    if(!parseTypes.success){ 
+        return res.status(401).json({ 
+            msg :"Received Invalid input" 
+        });  
     }
 
 
@@ -33,10 +33,10 @@ app.post("/hdfcWebhook", async (req, res) => {
             }),
             prisma.onRampTransaction.update({
                 where: {
-                    id: paymentInformation.userId
+                    token: paymentInformation.token
                 },
                 data: {
-                    status: "Success"
+                    status: OnRampStatus.Success
                 }
             })
         ])

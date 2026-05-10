@@ -15,7 +15,7 @@ export const Appbar = ({
     onSignout
 }: AppbarProps) => {
     return <div className="flex justify-between border-b px-4">
-        <div className="text-lg flex flex-col justify-center">
+        <div className="text-lg flex flex-col justify-center text-purple-600">
             SquidPay
         </div>
         <div className="flex flex-col justify-center pt-2">
