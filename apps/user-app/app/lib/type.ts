@@ -1,6 +1,5 @@
-export enum OnRampStatusType{
+export enum OnRampStatusType {
   Success,
   Failure,
-  Processing
+  Processing,
 }
-
