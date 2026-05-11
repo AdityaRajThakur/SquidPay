@@ -5,12 +5,13 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "db:generate" :"cd packages/db && npx prisma generate && cd ../..",
+    "db:generate": "cd packages/db && npx prisma generate && cd ../..",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@types/node": "^25.6.2",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
