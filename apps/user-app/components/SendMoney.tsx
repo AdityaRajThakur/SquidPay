@@ -23,7 +23,7 @@ export default function SendMoney():JSX.Element{
                         // write code for sending money
                                                 const res = await p2pTransfer({
                                                     to : number , 
-                                                    amount: amount 
+                                                    amount:(amount * 100 )
                                                 })
                                                 
                                                 console.log(res) ; 
