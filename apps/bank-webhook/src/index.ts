@@ -2,6 +2,7 @@ import express from 'express';
 import {PaymentTypes} from "../lib/PaymentTypes" ; 
 import prisma from "@repo/db/client";
 import {OnRampStatus} from "@prisma/client" ; 
+import z from "zod" ; 
 const app = express();
 app.use(express.json()) ; 
 app.post("/hdfcWebhook", async (req, res) => {
@@ -14,7 +15,7 @@ app.post("/hdfcWebhook", async (req, res) => {
     const parseTypes = PaymentTypes.safeParse(paymentInformation) ; 
     if(!parseTypes.success){ 
         return res.status(401).json({ 
-            msg :"Received Invalid input" 
+            msg :"Received Invalid input, send correct input" 
         });  
     }
 
