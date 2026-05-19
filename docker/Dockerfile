@@ -5,5 +5,6 @@ COPY package.json README.md tsconfig.json turbo.json package-lock.json ./
 COPY packages ./packages 
 COPY apps ./apps 
 RUN npm install 
+RUN npm run db:generate
 RUN npm run build 
 CMD ["npm" , "run" ,"start"] 
