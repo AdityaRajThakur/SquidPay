@@ -43,4 +43,4 @@ jobs:
               -p 80:3001 \
               --restart unless-stopped \
               pendrive/squidpay:latest
-            docker image prune -f
+            sudo docker image prune -f
