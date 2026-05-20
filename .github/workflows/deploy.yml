@@ -26,3 +26,21 @@ jobs:
 
       - name: check build
         run: docker pull pendrive/squidpay:latest
+      - name: Deploy To EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOSTNAME }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo docker stop web-app || true 
+            sudo docker rm web-app || true
+            sudo docker run -d \
+              --name web-app \
+              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+              -e NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} \
+              -e NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} \
+              -p 80:3001 \
+              --restart unless-stopped \
+              pendrive/squidpay:latest
+            docker image prune -f
